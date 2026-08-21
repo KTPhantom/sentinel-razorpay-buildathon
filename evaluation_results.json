@@ -1,0 +1,315 @@
+{
+  "detection_metrics": {
+    "dataset": "Kaggle Credit Card Fraud (held-out test set)",
+    "test_rows": 42722,
+    "threshold": 0.8,
+    "precision": 0.8551,
+    "recall": 0.7973,
+    "f1": 0.8252
+  },
+  "explanation_metrics": {
+    "sample_size": 20,
+    "explanation_accuracy_pct": 100.0,
+    "grounding_compliance_pct": 100.0,
+    "graded_sample": [
+      {
+        "id": "txn_00330",
+        "dataset": "Synthetic",
+        "ground_truth": "normal",
+        "flagged": false,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [],
+        "confidence": "high",
+        "explanation": "This transaction did not trigger any risk rules or anomalous model signals.",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "txn_01899",
+        "dataset": "Synthetic",
+        "ground_truth": "normal",
+        "flagged": false,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [],
+        "confidence": "high",
+        "explanation": "This transaction did not trigger any risk rules or anomalous model signals.",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "txn_01982",
+        "dataset": "Synthetic",
+        "ground_truth": "normal",
+        "flagged": false,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [],
+        "confidence": "high",
+        "explanation": "This transaction did not trigger any risk rules or anomalous model signals.",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "txn_02024",
+        "dataset": "Synthetic",
+        "ground_truth": "geo_anomaly",
+        "flagged": true,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [
+          "geo_anomaly"
+        ],
+        "confidence": "medium",
+        "explanation": "This transaction was flagged due to a geographic mismatch (12957.8 km from usual location).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "txn_02020",
+        "dataset": "Synthetic",
+        "ground_truth": "geo_anomaly",
+        "flagged": true,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [
+          "geo_anomaly"
+        ],
+        "confidence": "medium",
+        "explanation": "This transaction was flagged due to a geographic mismatch (12745.7 km from usual location).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "txn_02025",
+        "dataset": "Synthetic",
+        "ground_truth": "geo_anomaly",
+        "flagged": true,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [
+          "geo_anomaly"
+        ],
+        "confidence": "medium",
+        "explanation": "This transaction was flagged due to a geographic mismatch (1317.8 km from usual location).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "txn_02046",
+        "dataset": "Synthetic",
+        "ground_truth": "amount_spike",
+        "flagged": true,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [
+          "amount_spike",
+          "odd_hour_spend"
+        ],
+        "confidence": "high",
+        "explanation": "This transaction was flagged due to a significant amount spike (11.3x higher than historical average), combined with unusual spending during off-hours (Off-hours transaction with 11.3x average amount).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "txn_02057",
+        "dataset": "Synthetic",
+        "ground_truth": "amount_spike",
+        "flagged": true,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [
+          "amount_spike"
+        ],
+        "confidence": "medium",
+        "explanation": "This transaction was flagged due to a significant amount spike (7.7x higher than historical average).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "txn_02041",
+        "dataset": "Synthetic",
+        "ground_truth": "amount_spike",
+        "flagged": true,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [
+          "amount_spike"
+        ],
+        "confidence": "medium",
+        "explanation": "This transaction was flagged due to a significant amount spike (6.6x higher than historical average).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "txn_02069",
+        "dataset": "Synthetic",
+        "ground_truth": "new_device_high_value",
+        "flagged": true,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [
+          "new_device_high_value",
+          "odd_hour_spend"
+        ],
+        "confidence": "high",
+        "explanation": "This transaction was flagged due to a high-value transaction on an unrecognized device (Unrecognized device 'dev_unrecognized_89954' with 3.3x average amount), combined with unusual spending during off-hours (Off-hours transaction with 3.3x average amount).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "txn_02062",
+        "dataset": "Synthetic",
+        "ground_truth": "new_device_high_value",
+        "flagged": true,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [
+          "new_device_high_value"
+        ],
+        "confidence": "medium",
+        "explanation": "This transaction was flagged due to a high-value transaction on an unrecognized device (Unrecognized device 'dev_unrecognized_30316' with 3.2x average amount).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "txn_02083",
+        "dataset": "Synthetic",
+        "ground_truth": "odd_hour_spend",
+        "flagged": true,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [
+          "odd_hour_spend"
+        ],
+        "confidence": "medium",
+        "explanation": "This transaction was flagged due to unusual spending during off-hours (Off-hours transaction with 3.8x average amount).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "txn_02084",
+        "dataset": "Synthetic",
+        "ground_truth": "odd_hour_spend",
+        "flagged": true,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [
+          "odd_hour_spend"
+        ],
+        "confidence": "medium",
+        "explanation": "This transaction was flagged due to unusual spending during off-hours (Off-hours transaction with 4.2x average amount).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "txn_02015",
+        "dataset": "Synthetic",
+        "ground_truth": "high_velocity",
+        "flagged": true,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [
+          "high_velocity"
+        ],
+        "confidence": "medium",
+        "explanation": "This transaction was flagged due to a high transaction velocity spike (3 transactions within 2-minute window).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "txn_02009",
+        "dataset": "Synthetic",
+        "ground_truth": "high_velocity",
+        "flagged": true,
+        "top_shap_feature": "n/a (rule-based)",
+        "signals": [
+          "high_velocity"
+        ],
+        "confidence": "medium",
+        "explanation": "This transaction was flagged due to a high transaction velocity spike (3 transactions within 2-minute window).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "kaggle_eval_fraud_01",
+        "dataset": "Kaggle",
+        "ground_truth": "Fraud (1)",
+        "flagged": true,
+        "top_shap_feature": "V14",
+        "signals": [
+          "V14",
+          "V10",
+          "V12"
+        ],
+        "confidence": "high",
+        "explanation": "This transaction was flagged due to elevated anomaly attribution on model feature V14 (+4.15 SHAP score), elevated anomaly attribution on model feature V10 (+1.17 SHAP score), combined with elevated anomaly attribution on model feature V12 (+0.88 SHAP score).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "kaggle_eval_fraud_02",
+        "dataset": "Kaggle",
+        "ground_truth": "Fraud (1)",
+        "flagged": true,
+        "top_shap_feature": "V14",
+        "signals": [
+          "V14",
+          "V4",
+          "V12"
+        ],
+        "confidence": "high",
+        "explanation": "This transaction was flagged due to elevated anomaly attribution on model feature V14 (+3.82 SHAP score), elevated anomaly attribution on model feature V4 (+1.15 SHAP score), combined with elevated anomaly attribution on model feature V12 (+1.10 SHAP score).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "kaggle_eval_fraud_03",
+        "dataset": "Kaggle",
+        "ground_truth": "Fraud (1)",
+        "flagged": true,
+        "top_shap_feature": "V14",
+        "signals": [
+          "V14",
+          "V4",
+          "V10"
+        ],
+        "confidence": "high",
+        "explanation": "This transaction was flagged due to elevated anomaly attribution on model feature V14 (+3.87 SHAP score), elevated anomaly attribution on model feature V4 (+1.21 SHAP score), combined with elevated anomaly attribution on model feature V10 (+1.05 SHAP score).",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "kaggle_eval_normal_01",
+        "dataset": "Kaggle",
+        "ground_truth": "Normal (0)",
+        "flagged": false,
+        "top_shap_feature": "none",
+        "signals": [],
+        "confidence": "high",
+        "explanation": "This transaction did not trigger any risk rules or anomalous model signals.",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      },
+      {
+        "id": "kaggle_eval_normal_02",
+        "dataset": "Kaggle",
+        "ground_truth": "Normal (0)",
+        "flagged": false,
+        "top_shap_feature": "none",
+        "signals": [],
+        "confidence": "high",
+        "explanation": "This transaction did not trigger any risk rules or anomalous model signals.",
+        "is_grounded": true,
+        "score": 1.0,
+        "grade": "Correct (1.0)"
+      }
+    ]
+  }
+}

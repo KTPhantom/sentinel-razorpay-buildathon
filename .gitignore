@@ -1,0 +1,51 @@
+# Data files (Kaggle dataset is too large to commit; download instructions in data/README.md)
+data/creditcard.csv
+data/*.csv
+!data/README.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables / secrets
+.env
+.env.*
+
+# Model artifacts
+models/
+*.pkl
+*.joblib
+*.xgb
+
+# Generated helper scripts (not part of the submission)
+scripts/_gen_diagram.py
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
