@@ -65,6 +65,11 @@ st.markdown("""
         font-size: 1.05rem;
         line-height: 1.5;
         margin: 10px 0px;
+        color: #f1f5f9;
+    }
+    .explanation-box.flagged {
+        border-left-color: #ef4444;
+        color: #fca5a5;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -290,8 +295,13 @@ def main():
             sim_odd_hour = st.checkbox("Off-Hours / Night Transaction?", value=False)
 
         if st.button("Analyze Simulated Transaction", type="primary"):
+            import time
+            ts_main = "2026-08-20T03:00:00" if sim_odd_hour else "2026-08-20T14:00:00"
+            # velocity history needs timestamps just before the main transaction
+            ts_history = "2026-08-20T02:59:30" if sim_odd_hour else "2026-08-20T13:59:30"
+
             sim_txn = {
-                "transaction_id": "txn_sim_custom",
+                "transaction_id": f"txn_sim_{int(time.time())}",
                 "user_id": "usr_sim_01",
                 "amount": float(sim_amount),
                 "historical_avg_amount": float(sim_avg_amount),
@@ -301,20 +311,21 @@ def main():
                 "historical_location_lon": 77.5946,
                 "device_id": "dev_new_sim" if sim_new_dev else "dev_known",
                 "historical_device_ids": json.dumps(["dev_known"]),
-                "timestamp": "2026-08-20T03:00:00" if sim_odd_hour else "2026-08-20T14:00:00",
+                "timestamp": ts_main,
                 "typical_active_start_hour": 8,
                 "typical_active_end_hour": 22,
             }
-            sim_history = []
-            if sim_velocity > 1:
-                for i in range(sim_velocity - 1):
-                    sim_history.append({
-                        "user_id": "usr_sim_01",
-                        "timestamp": "2026-08-20T13:59:30",
-                    })
+            sim_history = [
+                {"user_id": "usr_sim_01", "timestamp": ts_history}
+                for _ in range(sim_velocity - 1)
+            ]
 
             res = pipeline.analyze_synthetic_transaction(sim_txn, recent_history=sim_history)
-            render_audit_card(res, sim_txn)
+            st.session_state["sim_result"] = res
+            st.session_state["sim_txn"] = sim_txn
+
+        if "sim_result" in st.session_state:
+            render_audit_card(st.session_state["sim_result"], st.session_state["sim_txn"])
 
 
 def render_audit_card(record: dict, raw_txn: dict | None = None, analyst_action: str | None = None):
@@ -342,7 +353,8 @@ def render_audit_card(record: dict, raw_txn: dict | None = None, analyst_action:
             st.error("Grounding Audit Failed")
 
     st.markdown("#### Natural Language Grounded Explanation")
-    st.markdown(f'<div class="explanation-box">{record["explanation"]}</div>', unsafe_allow_html=True)
+    box_class = "explanation-box flagged" if record["flag"] else "explanation-box"
+    st.markdown(f'<div class="{box_class}">{record["explanation"]}</div>', unsafe_allow_html=True)
 
     if analyst_action:
         st.success(f"**Recommended Analyst Action:** {analyst_action}")
