@@ -23,10 +23,8 @@ ENV/
 .env
 .env.*
 
-# Model artifacts
-models/
+# Model artifacts (committed — small enough, saves reviewers having to retrain)
 *.pkl
-*.joblib
 *.xgb
 
 # Generated helper scripts (not part of the submission)
