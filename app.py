@@ -17,15 +17,13 @@ from src.pipeline import TransactionAnomalyPipeline
 
 EVAL_RESULTS_PATH = PROJECT_ROOT / "evaluation_results.json"
 
-# Page configuration
 st.set_page_config(
     page_title="Transaction Anomaly Explainer | Razorpay Buildathon",
-    page_icon="🛡️",
+    page_icon=None,
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# Custom Styling for polished Risk Manager UI
 st.markdown("""
 <style>
     .metric-card {
@@ -78,7 +76,6 @@ def load_pipeline():
 
 
 def _load_eval_metrics() -> dict:
-    """Load evaluation metrics from evaluation_results.json (single source of truth)."""
     if EVAL_RESULTS_PATH.exists():
         with open(EVAL_RESULTS_PATH, "r", encoding="utf-8") as f:
             return json.load(f)
@@ -96,19 +93,17 @@ def load_sample_queue():
 def main():
     pipeline = load_pipeline()
 
-    # Sidebar: Project Header & Quantitative Metrics
     st.sidebar.image("https://razorpay.com/assets/razorpay-logo.svg", width=180)
     st.sidebar.title("AI Risk Manager")
     st.sidebar.markdown("**Transaction Anomaly Explainer**")
     st.sidebar.caption("Track: AI Risk Manager | Razorpay AI Buildathon")
     st.sidebar.divider()
 
-    # Load eval metrics from evaluation_results.json — single source of truth
     eval_data = _load_eval_metrics()
     det = eval_data.get("detection_metrics", {})
     exp = eval_data.get("explanation_metrics", {})
 
-    st.sidebar.subheader("📊 Held-Out Eval Benchmarks")
+    st.sidebar.subheader("Held-Out Eval Benchmarks")
     if det:
         st.sidebar.markdown(
             f"- **Detection Precision:** `{det.get('precision', 'N/A')}`\n"
@@ -124,41 +119,36 @@ def main():
         )
     else:
         st.sidebar.warning(
-            "Eval results not found. Run `python scripts/run_evaluation.py` to generate them.",
-            icon="⚠️",
+            "Eval results not found. Run `python scripts/run_evaluation.py` to generate them."
         )
 
     if not pipeline.classifier_ready:
         st.sidebar.error(
-            "⚠️ XGBoost classifier not loaded.\n\n"
+            "XGBoost classifier not loaded.\n\n"
             "Kaggle-path analysis is unavailable.\n\n"
             "Run: `python scripts/train_classifier.py`"
         )
 
     st.sidebar.divider()
 
-    st.sidebar.subheader("⚙️ System Architecture")
+    st.sidebar.subheader("System Architecture")
     st.sidebar.info(
         "**Two-Layer Invariant:**\n"
         "1. Detection Layer evaluates quantitative rules & XGBoost.\n"
         "2. Explanation Layer receives **ONLY** `triggered_signals`."
     )
 
-    # Main Navigation Tabs
     tab_pitch, tab_queue, tab_simulator = st.tabs([
-        "🎯 Pitch Demo Scenarios",
-        "📋 Live Risk Operations Queue",
-        "🧪 Interactive Transaction Simulator",
+        "Pitch Demo Scenarios",
+        "Live Risk Operations Queue",
+        "Interactive Transaction Simulator",
     ])
 
-    # -------------------------------------------------------------------------
-    # TAB 1: PITCH DEMO SCENARIOS
-    # -------------------------------------------------------------------------
     with tab_pitch:
         st.header("5-Minute Pitch Demo Scenarios")
         st.markdown(
-            "Curated scenarios aligned with the **Demo Script** in `01_product_spec.md` §7 "
-            "demonstrating clean catches, false-positive transparency, and low-confidence handling."
+            "Curated scenarios demonstrating clean catches, false-positive transparency, "
+            "and low-confidence handling."
         )
 
         scenario_choice = st.radio(
@@ -182,13 +172,13 @@ def main():
                 "user_id": "usr_0042",
                 "amount": 28500.00,
                 "historical_avg_amount": 2500.00,
-                "location_lat": 51.5074,  # London
+                "location_lat": 51.5074,
                 "location_lon": -0.1278,
-                "historical_location_lat": 12.9716,  # Bengaluru
+                "historical_location_lat": 12.9716,
                 "historical_location_lon": 77.5946,
                 "device_id": "dev_unrecognized_99812",
                 "historical_device_ids": json.dumps(["dev_usr_0042_1"]),
-                "timestamp": "2026-08-20T03:15:00",  # Off hours (3 AM)
+                "timestamp": "2026-08-20T03:15:00",
                 "typical_active_start_hour": 8,
                 "typical_active_end_hour": 22,
             }
@@ -198,19 +188,20 @@ def main():
         elif "2. False-Positive" in scenario_choice:
             st.subheader("Scenario 2: False Positive Walkthrough — Transparent Reasoning")
             st.markdown(
-                "**Narrative:** A legitimate VIP customer traveling on holiday to New York makes an expensive electronics purchase at 2 AM. "
-                "The system correctly flags the anomaly *and* clearly states the exact reasons, enabling the analyst to verify travel context and dismiss in under 5 seconds."
+                "**Narrative:** A legitimate VIP customer traveling to New York makes an expensive electronics "
+                "purchase at 2 AM. The system flags the anomaly and clearly states the exact reasons, enabling "
+                "the analyst to verify travel context and dismiss in seconds."
             )
             fp_txn = {
                 "transaction_id": "txn_demo_false_positive",
                 "user_id": "usr_0188",
                 "amount": 14200.00,
                 "historical_avg_amount": 3500.00,
-                "location_lat": 40.7128,  # New York
+                "location_lat": 40.7128,
                 "location_lon": -74.0060,
-                "historical_location_lat": 19.0760,  # Mumbai
+                "historical_location_lat": 19.0760,
                 "historical_location_lon": 72.8777,
-                "device_id": "dev_usr_0188_1",  # Known device!
+                "device_id": "dev_usr_0188_1",
                 "historical_device_ids": json.dumps(["dev_usr_0188_1"]),
                 "timestamp": "2026-08-20T02:30:00",
                 "typical_active_start_hour": 9,
@@ -223,7 +214,7 @@ def main():
             st.subheader("Scenario 3: Low-Confidence Edge Case — Honest Uncertainty")
             st.markdown(
                 "**Narrative:** A single borderline signal triggered (minor off-hours purchase with modest amount). "
-                "Instead of overclaiming high risk, the system transparently reports **MEDIUM/LOW confidence**."
+                "Instead of overclaiming high risk, the system transparently reports medium/low confidence."
             )
             edge_txn = {
                 "transaction_id": "txn_demo_edge_case",
@@ -236,23 +227,19 @@ def main():
                 "historical_location_lon": 77.5946,
                 "device_id": "dev_usr_0099_1",
                 "historical_device_ids": json.dumps(["dev_usr_0099_1"]),
-                "timestamp": "2026-08-20T04:10:00",  # Early morning
+                "timestamp": "2026-08-20T04:10:00",
                 "typical_active_start_hour": 8,
                 "typical_active_end_hour": 22,
             }
             result = pipeline.analyze_synthetic_transaction(edge_txn)
             render_audit_card(result, edge_txn)
 
-    # -------------------------------------------------------------------------
-    # TAB 2: LIVE RISK OPERATIONS QUEUE
-    # -------------------------------------------------------------------------
     with tab_queue:
         st.header("Risk Operations Queue")
-        st.markdown("Real-time triage queue for operations analysts to review flagged items.")
+        st.markdown("Triage queue for operations analysts to review flagged items.")
 
         queue_data = load_sample_queue()
 
-        # Filter controls
         col_f1, col_f2 = st.columns([1, 3])
         with col_f1:
             filter_mode = st.selectbox("Queue Filter", ["All Transactions", "Flagged Anomalies Only", "Clean Transactions Only"])
@@ -263,12 +250,11 @@ def main():
         elif filter_mode == "Clean Transactions Only":
             filtered = [r for r in queue_data if not r["flag"]]
 
-        # Table summary
         table_rows = []
         for r in filtered:
             table_rows.append({
                 "Txn ID": r["transaction_id"],
-                "Status": "🚨 FLAGGED" if r["flag"] else "✅ CLEAN",
+                "Status": "FLAGGED" if r["flag"] else "CLEAN",
                 "Risk Score": f"{r['risk_score']:.2f}",
                 "Confidence": r["confidence"].upper(),
                 "Signals Count": len(r["triggered_signals"]),
@@ -278,25 +264,21 @@ def main():
         df_display = pd.DataFrame(table_rows)
         st.dataframe(df_display, use_container_width=True, height=260)
 
-        # Inspect Selected Item
         st.divider()
-        st.subheader("🔍 Transaction Detail Inspector")
+        st.subheader("Transaction Detail Inspector")
         selected_id = st.selectbox("Select Transaction ID to inspect:", [r["transaction_id"] for r in filtered])
 
         if selected_id:
             selected_item = next(r for r in filtered if r["transaction_id"] == selected_id)
             render_audit_card(selected_item)
 
-    # -------------------------------------------------------------------------
-    # TAB 3: CUSTOM TRANSACTION SIMULATOR
-    # -------------------------------------------------------------------------
     with tab_simulator:
         st.header("Custom Transaction Simulator")
-        st.markdown("Simulate any arbitrary transaction to test detection and explanation generation in real-time.")
+        st.markdown("Simulate any transaction to test detection and explanation generation in real-time.")
 
         c1, c2, c3 = st.columns(3)
         with c1:
-            sim_amount = st.number_input("Transaction Amount (₹ / $)", min_value=10.0, max_value=500000.0, value=18500.0, step=500.0)
+            sim_amount = st.number_input("Transaction Amount (Rs / $)", min_value=10.0, max_value=500000.0, value=18500.0, step=500.0)
             sim_avg_amount = st.number_input("User Historical Avg Amount", min_value=10.0, max_value=50000.0, value=2500.0, step=200.0)
 
         with c2:
@@ -307,8 +289,7 @@ def main():
             sim_new_dev = st.checkbox("Unrecognized Device?", value=True)
             sim_odd_hour = st.checkbox("Off-Hours / Night Transaction?", value=False)
 
-        if st.button("🚀 Analyze Simulated Transaction", type="primary"):
-            # Construct synthetic transaction dict
+        if st.button("Analyze Simulated Transaction", type="primary"):
             sim_txn = {
                 "transaction_id": "txn_sim_custom",
                 "user_id": "usr_sim_01",
@@ -324,7 +305,6 @@ def main():
                 "typical_active_start_hour": 8,
                 "typical_active_end_hour": 22,
             }
-            # For velocity simulation, pass dummy history
             sim_history = []
             if sim_velocity > 1:
                 for i in range(sim_velocity - 1):
@@ -338,15 +318,14 @@ def main():
 
 
 def render_audit_card(record: dict, raw_txn: dict | None = None, analyst_action: str | None = None):
-    """Render a comprehensive risk audit card for any transaction."""
     col1, col2, col3, col4 = st.columns([1.5, 1.5, 2, 2])
 
     with col1:
         st.markdown(f"**Transaction ID:** `{record['transaction_id']}`")
         if record["flag"]:
-            st.markdown('<span class="badge-flagged">🚨 ANOMALY FLAGGED</span>', unsafe_allow_html=True)
+            st.markdown('<span class="badge-flagged">ANOMALY FLAGGED</span>', unsafe_allow_html=True)
         else:
-            st.markdown('<span class="badge-clean">✅ CLEAN / NORMAL</span>', unsafe_allow_html=True)
+            st.markdown('<span class="badge-clean">CLEAN / NORMAL</span>', unsafe_allow_html=True)
 
     with col2:
         st.metric("Risk Score", f"{record['risk_score']:.2f}")
@@ -357,23 +336,22 @@ def render_audit_card(record: dict, raw_txn: dict | None = None, analyst_action:
 
     with col4:
         if record["is_grounded"]:
-            st.markdown('<span class="badge-grounded">🛡️ 100% Grounded (Audited)</span>', unsafe_allow_html=True)
+            st.markdown('<span class="badge-grounded">Grounded (Audited)</span>', unsafe_allow_html=True)
             st.caption("Zero hallucinated signals detected.")
         else:
             st.error("Grounding Audit Failed")
 
-    st.markdown("#### 💬 Natural Language Grounded Explanation")
+    st.markdown("#### Natural Language Grounded Explanation")
     st.markdown(f'<div class="explanation-box">{record["explanation"]}</div>', unsafe_allow_html=True)
 
     if analyst_action:
         st.success(f"**Recommended Analyst Action:** {analyst_action}")
 
-    # Collapsible payload audit
-    with st.expander("🔍 Inspect Structured 'triggered_signals' Interface (Grounding Contract)"):
+    with st.expander("Inspect triggered_signals payload (grounding contract)"):
         st.json(record["triggered_signals_detail"])
 
     if raw_txn:
-        with st.expander("📄 View Raw Transaction Metadata"):
+        with st.expander("View raw transaction metadata"):
             st.json(raw_txn)
 
 
